@@ -6,6 +6,8 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
+import axios from "../../axios";
+import { Inertia } from "@inertiajs/inertia";
 
 defineProps({
     canResetPassword: {
@@ -22,10 +24,28 @@ const form = useForm({
     remember: false,
 });
 
-const submit = () => {
-    form.post(route("login"), {
-        onFinish: () => form.reset("password"),
-    });
+const submit = async () => {
+    try {
+        const response = await axios.post("/login", {
+            email: form.email,
+            password: form.password,
+        });
+
+        // Save the token to localStorage
+        console.log(response);
+        localStorage.setItem("auth_token", response.data.token);
+
+        // Set the token for axios globally
+        axios.defaults.headers.common[
+            "Authorization"
+        ] = `Bearer ${response.data.token}`;
+
+        // Redirect the user (you can redirect them to any page)
+        Inertia.visit("/dashboard");
+    } catch (error) {
+        form.errorMessage =
+            error.response.data.message || "Login failed. Please try again.";
+    }
 };
 </script>
 

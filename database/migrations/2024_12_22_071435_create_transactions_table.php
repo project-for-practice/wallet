@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->decimal('amount', 10, 2);
             $table->string('transaction_type');
+            $table->string('transaction_id');
             $table->string('status')->default('pending');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');

@@ -10,7 +10,7 @@ class Transaction extends Model
     use HasFactory;
     const STATUS_PENDING = 'pending';
     const STATUS_COMPLETED = 'completed';
-    const STATUS_FAILED = 'failed';
+    const STATUS_FAILED = 'cancelled';
     protected $table = 'transactions';
 
 
@@ -18,6 +18,7 @@ class Transaction extends Model
         'user_id',
         'amount',
         'transaction_type',
+        'transaction_id',
         'status',
     ];
 
@@ -34,7 +35,7 @@ class Transaction extends Model
             case self::STATUS_COMPLETED:
                 return 'Completed';
             case self::STATUS_FAILED:
-                return 'Failed';
+                return 'Cancelled';
             default:
                 return 'Unknown';
         }
