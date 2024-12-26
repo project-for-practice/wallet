@@ -13,7 +13,6 @@ class Transaction extends Model
     const STATUS_FAILED = 'cancelled';
     protected $table = 'transactions';
 
-
     protected $fillable = [
         'user_id',
         'amount',
@@ -40,6 +39,18 @@ class Transaction extends Model
                 return 'Unknown';
         }
     }
+    public static function calculateAmountForUser($userId)
+    {
+        $totalAmount = self::where('user_id', $userId)
+            ->get()
+            ->reduce(function ($carry, $transaction) {
+                return $transaction->type == 'deposit'
+                    ? $carry + $transaction->amount
+                    : $carry - $transaction->amount;
+            }, 0);
+
+        return $totalAmount;
+    }
 
     public function setStatusAttribute($value)
     {
@@ -48,21 +59,5 @@ class Transaction extends Model
         }
         $this->attributes['status'] = $value;
     }
-
-
 }
 
-// $transaction = Transaction::create([
-//     'user_id' => 1,
-//     'amount' => 100.50,
-//     'transaction_type' => 'deposit',
-//     // The status will default to 'pending' if not provided
-// ]);
-
-// // Create a new transaction with a specific status
-// $completedTransaction = Transaction::create([
-//     'user_id' => 1,
-//     'amount' => 50.00,
-//     'transaction_type' => 'withdrawal',
-//     'status' => Transaction::STATUS_COMPLETED, // Use the constant for status
-// ]);

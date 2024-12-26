@@ -16,7 +16,7 @@ class DashboardController extends Controller
         // dd($user);
         $role = $user->roles()->first();
         return Inertia::render('Dashboard', [
-            'role' => $role ? $role->name : 'No role assigned',
+            'role' => $role ? $role->name : '',
         ]);
     }
 }

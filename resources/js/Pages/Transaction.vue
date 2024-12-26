@@ -5,6 +5,7 @@ import { Inertia } from "@inertiajs/inertia";
 import dayjs from "dayjs";
 import { ref } from "vue";
 import { debounce } from "lodash";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 const props = defineProps({
     transaction: Array,
 });
@@ -77,6 +78,10 @@ const searchTransactions = debounce(function () {
     };
     Inertia.get("/transaction/search", params);
 }, 500);
+
+const goToAddUser = () => {
+    Inertia.visit("/transaction/create");
+};
 </script>
 
 <template>
@@ -85,6 +90,9 @@ const searchTransactions = debounce(function () {
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 Transaction List
+                <PrimaryButton @click="goToAddUser" class="ml-10"
+                    >Add New Transaction</PrimaryButton
+                >
             </h2>
         </template>
         <!-- Date filter form -->

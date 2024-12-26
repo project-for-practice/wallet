@@ -10,9 +10,8 @@ import { Link } from "@inertiajs/vue3";
 const showingNavigationDropdown = ref(false);
 
 const props = defineProps({
-    user: Object,
-})
-
+    role: String,
+});
 </script>
 
 <template>
@@ -50,6 +49,14 @@ const props = defineProps({
                                     "
                                 >
                                     Transaction List
+                                </NavLink>
+                                <NavLink
+                                    :href="route('users-list')"
+                                    :active="
+                                        route().current('transaction-users')
+                                    "
+                                >
+                                    Users List
                                 </NavLink>
                             </div>
                         </div>

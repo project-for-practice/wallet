@@ -51,7 +51,19 @@ class TransactionController extends Controller
             'transaction' => $transactions,
         ]);
     }
-
+    public function addTransaction(){
+        return Inertia::render('Transactions/AddTransaction');
+    }
+    public function store(StoreTransactionRequest $request)
+    {
+        Transaction::create($request->validated());
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'Transaction created successfully.',
+        //     'transaction' => $transaction,
+        // ]);
+        return redirect()->route('transaction-list')->with('success', 'Transaction created successfully');
+    }
     public function createTransaction()
     {
         try {
@@ -95,6 +107,11 @@ class TransactionController extends Controller
             'message' => 'Transaction created successfully.',
             'transaction' => $transaction,
         ]);
+    }
+    public function getUserAmount($userId)
+    {
+        $totalAmount = Transaction::calculateAmountForUser($userId);
+        return response()->json(['amount' => $totalAmount]);
     }
     public function getTrasaction()
     {

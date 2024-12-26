@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Home\DashboardController;
 use App\Http\Controllers\Home\TransactionController;
+use App\Http\Controllers\Home\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -18,16 +19,30 @@ Route::get('/', function () {
 });
 
 Route::
-        namespace('Home')->name('transaction-')->prefix('transaction')->middleware(['auth:sanctum', 'verified', RoleMiddleware::class.':admin'])->group(function () {
+        namespace('Home')->name('transaction-')->prefix('transaction')->middleware(['auth:sanctum', 'verified', RoleMiddleware::class . ':admin'])->group(function () {
             Route::get('/', [TransactionController::class, 'getTrasaction'])->name('list');
-
+            Route::get('/create', [TransactionController::class, 'addTransaction'])->name('create');
             Route::get('/add', [TransactionController::class, 'createTransaction'])->name('add');
             Route::get('/filter', [TransactionController::class, 'index'])->name('filter');
             Route::get('/search', [TransactionController::class, 'index'])->name('search');
             Route::put('/update/{id}/status', [TransactionController::class, 'updateStatus']);
+            Route::get('/user/{userId}/amount', [TransactionController::class, 'getUserAmount']);
+
+
         });
 
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth:sanctum', 'verified', RoleMiddleware::class.':admin'])->name('dashboard');
+Route::
+        namespace('Home')->name('users-')->prefix('users')->middleware(['auth:sanctum', 'verified', RoleMiddleware::class . ':admin'])->group(function () {
+            Route::get('/list', [UserController::class, 'index'])->name('list');
+            Route::get('/filter', [UserController::class, 'filterUsers'])->name('filter');
+            Route::put('/update/{id}/status', [UserController::class, 'updateStatus'])->name('updateStatus');
+            Route::post('/add', [UserController::class, 'store'])->name('store');
+            Route::delete('/{id}', [UserController::class, 'destroy']);
+            Route::get('/create', function () {
+                return Inertia::render('Users/AddUser');
+            })->name('create');
+        });
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth:sanctum', 'verified', RoleMiddleware::class . ':admin'])->name('dashboard');
 
 // Route::get('/transaction-list', function () {
 //     return Inertia::render('Transaction');

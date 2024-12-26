@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class RoleMiddleware
 {
@@ -28,7 +29,7 @@ class RoleMiddleware
 
         // Check if the user has the required role
         if (!$user->roles()->where('name', $role)->exists()) {
-            return response()->json(['message' => 'Forbidden'], 403);
+            return Inertia::render('User');
         }
 
         // Continue to the next request
