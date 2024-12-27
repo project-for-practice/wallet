@@ -45,14 +45,16 @@ class TransactionController extends Controller
             $status = $request->status;
             $query->where('status', $status);
         }
-        $transactions = $query->with('user')->get();
+        $transactions = $query->with('user')->latest()->get();
 
         return Inertia::render('Transaction', [
             'transaction' => $transactions,
         ]);
     }
-    public function addTransaction(){
-        return Inertia::render('Transactions/AddTransaction');
+    public function addTransaction($userId)
+    {
+
+        return Inertia::render('Transactions/AddTransaction', ['userId' => $userId]);
     }
     public function store(StoreTransactionRequest $request)
     {
@@ -116,7 +118,7 @@ class TransactionController extends Controller
     public function getTrasaction()
     {
         // $completedTransactions = Transaction::where('status', Transaction::STATUS_COMPLETED)->get();
-        $completedTransactions = Transaction::with('user')->get();
+        $completedTransactions = Transaction::with('user')->latest()->get();
         // dd($completedTransactions);
         return Inertia::render('Transaction', [
             'transaction' => $completedTransactions

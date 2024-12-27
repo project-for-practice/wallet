@@ -21,8 +21,8 @@ Route::get('/', function () {
 Route::
         namespace('Home')->name('transaction-')->prefix('transaction')->middleware(['auth:sanctum', 'verified', RoleMiddleware::class . ':admin'])->group(function () {
             Route::get('/', [TransactionController::class, 'getTrasaction'])->name('list');
-            Route::get('/create', [TransactionController::class, 'addTransaction'])->name('create');
-            Route::get('/add', [TransactionController::class, 'createTransaction'])->name('add');
+            Route::get('/create/{userId}', [TransactionController::class, 'addTransaction'])->name('create');
+            Route::post('/add', [TransactionController::class, 'store'])->name('add');
             Route::get('/filter', [TransactionController::class, 'index'])->name('filter');
             Route::get('/search', [TransactionController::class, 'index'])->name('search');
             Route::put('/update/{id}/status', [TransactionController::class, 'updateStatus']);

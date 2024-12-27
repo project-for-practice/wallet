@@ -79,9 +79,7 @@ const searchTransactions = debounce(function () {
     Inertia.get("/transaction/search", params);
 }, 500);
 
-const goToAddUser = () => {
-    Inertia.visit("/transaction/create");
-};
+
 </script>
 
 <template>
@@ -90,9 +88,6 @@ const goToAddUser = () => {
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 Transaction List
-                <PrimaryButton @click="goToAddUser" class="ml-10"
-                    >Add New Transaction</PrimaryButton
-                >
             </h2>
         </template>
         <!-- Date filter form -->

@@ -40,7 +40,7 @@
                         <div class="form-group mt-3">
                             <label for="email">Transaction id</label>
                             <input
-                                v-model="form.email"
+                                v-model="form.transaction_id"
                                 type="text"
                                 id="transaction_id"
                                 class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md w-[100%]"
@@ -134,6 +134,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 const props = defineProps({
     message: String,
+    userId: Number,
 });
 const form = useForm({
     user_id: "",
@@ -146,6 +147,8 @@ const cat = ["pending", "completed", "cancelled"];
 const transType = ["deposit", "withdrawal"];
 const errors = ref([]);
 const message = ref(props.message);
+console.log(props.userId);
+form.user_id = props.userId;
 watch(
     () => props.message,
     (newMessage) => {
@@ -155,17 +158,16 @@ watch(
 const closePopup = () => {
     message.value = "";
 };
-// Method to handle form submission
+
 const submit = async () => {
     try {
-        // Send the form data via Inertia
-        await Inertia.post("/transactions/add", form.data(), {
+        await Inertia.post("/transaction/add", form.data(), {
             onSuccess: () => {
-                form.reset(); // Reset form if the user is added successfully
-                errors.value = []; // Clear errors
+                form.reset();
+                errors.value = [];
             },
             onError: (error) => {
-                errors.value = error.response.data.errors || []; // Capture validation errors
+                errors.value = error.response.data.errors || [];
             },
         });
     } catch (error) {

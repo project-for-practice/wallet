@@ -44,7 +44,7 @@ class Transaction extends Model
         $totalAmount = self::where('user_id', $userId)
             ->get()
             ->reduce(function ($carry, $transaction) {
-                return $transaction->type == 'deposit'
+                return $transaction->transaction_type == 'deposit'
                     ? $carry + $transaction->amount
                     : $carry - $transaction->amount;
             }, 0);

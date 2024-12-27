@@ -69,7 +69,7 @@
                     <table class="min-w-full table-auto">
                         <thead>
                             <tr>
-                                <th class="px-4 py-2 text-left border-b">ID</th>
+                                <th class="px-4 py-2 text-left border-b">Add Amount</th>
                                 <th class="px-4 py-2 text-left border-b">
                                     Name
                                 </th>
@@ -120,8 +120,12 @@
                                 :key="user.id"
                                 class="hover:bg-gray-200"
                             >
-                                <td class="px-4 py-2 border-b">
-                                    {{ user.id }}
+                                <td class="px-2 py-2 border-b">
+                                    <PrimaryButton
+                                        @click="goToAddTransacton(user.id)"
+                                        class=""
+                                        >New ($)</PrimaryButton
+                                    >
                                 </td>
                                 <td class="px-4 py-2 border-b">
                                     {{ user.name }}
@@ -213,6 +217,9 @@ const updateStatus = (userId) => {
 // };
 const goToAddUser = () => {
     Inertia.visit("/users/create");
+};
+const goToAddTransacton = (user_id) => {
+    Inertia.visit(`/transaction/create/${user_id}`);
 };
 const applyFilters = async () => {
     try {

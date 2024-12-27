@@ -22,10 +22,11 @@ class StoreTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id', // user must exist in the users table
-            'amount' => 'required|numeric|min:0', // amount must be a number and greater than 0
-            'transaction_type' => 'required|in:deposit,withdrawal', // must be 'deposit' or 'withdrawal'
-            'status' => 'required|in:pending,completed,cancelled', // optional but should be a valid status if provided
+            'user_id' => 'required|exists:users,id',
+            'amount' => 'required|numeric|min:0',
+            'transaction_id' => 'required',
+            'transaction_type' => 'required|in:deposit,withdrawal',
+            'status' => 'required|in:pending,completed,cancelled',
         ];
     }
 }
